@@ -1,4 +1,5 @@
 import React from "react";
+import '../styles/SearchResults.css';
 
 interface Props {
   term: string;
@@ -104,7 +105,7 @@ class SearchResults extends React.Component<Props, State> {
     if (error) return <p className="text-red-500">{error}</p>;
 
     return (
-      <ul className="space-y-2">
+      <ul className="results space-y-2">
         {results.map((item) => (
           <li key={item.name} className="p-2 border rounded shadow-sm">
             <h3 className="font-bold capitalize">{item.name}</h3>
