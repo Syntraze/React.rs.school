@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "prepare": "husky",
-    "test": "echo \"No tests yet\""
+    "test": "echo \"No tests yet\"",
+    "format:fix": "prettier --write ."
   },
   "dependencies": {
     "react": "^19.1.0",

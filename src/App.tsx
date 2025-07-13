@@ -1,35 +1,52 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import './App.css';
+import SearchBar from './components/SearchBar';
+import SearchResults from './components/SearchResults';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface State {
+  term: string;
+  throwError: boolean;
 }
 
-export default App
+class App extends React.Component<object, State> {
+  constructor(props: object) {
+    super(props);
+    const savedTerm = localStorage.getItem('searchTerm') || '';
+    this.state = {
+      term: savedTerm,
+      throwError: false,
+    };
+  }
+
+  handleSearch = (term: string) => {
+    localStorage.setItem('searchTerm', term);
+    this.setState({ term });
+  };
+
+  triggerRenderError = () => {
+    this.setState({ throwError: true });
+  };
+
+  render() {
+    if (this.state.throwError) {
+      throw new Error('Simulated render error from App');
+    }
+
+    return (
+      <div className="flex flex-col min-h-screen p-4 gap-4">
+        <div className="bg-gray-100 p-4 rounded shadow">
+          <SearchBar
+            initialTerm={this.state.term}
+            onSearch={this.handleSearch}
+            onThrowError={this.triggerRenderError}
+          />
+        </div>
+        <div className="flex-grow bg-white p-4 rounded shadow border">
+          <SearchResults term={this.state.term} />
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;
